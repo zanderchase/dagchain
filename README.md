@@ -13,3 +13,9 @@ It combines [LangChain](https://langchain.readthedocs.io/en/latest/) with [Dagst
 This can be used to replace the manual run of `ingest.sh` in [ChatLangChain](https://github.com/hwchase17/chat-langchain) to provide scheduled updates of vectorstores as well as handling and managing inputs from various sources.
 
 ## Next Features To Work On
+
+
+
+## Sample View
+
+<img width="1012" alt="Screen Shot 2023-02-15 at 2 31 50 PM" src="https://user-images.githubusercontent.com/22759784/219172842-1a7e5052-6856-4ef9-93b1-4d70ad78bd44.png">
