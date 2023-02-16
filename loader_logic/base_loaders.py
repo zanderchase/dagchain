@@ -16,7 +16,7 @@ def source_loader(loader_list):
 @op(config_schema={"name": str})
 def output_loader(context, source_loader):
     name = context.op_config["name"]
-    filename = f"vectorstore/{name}_vectorstore.pkl"
+    filename = f"{name}_vectorstore.pkl"
     # Split text
     text_splitter = RecursiveCharacterTextSplitter()
     documents = text_splitter.split_documents(source_loader)
