@@ -1,32 +1,26 @@
-from dagster import asset, op, job, graph, load_assets_from_package_module, OpDefinition, AssetsDefinition, AssetKey, AssetMaterialization, Definitions, ScheduleDefinition
+from loader_logic.dag_abstractions import DagChainBaseLoader, SetDefinitions
 from langchain.document_loaders import CollegeConfidentialLoader, AZLyricsLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores.faiss import FAISS
-from langchain.embeddings import OpenAIEmbeddings
-from loader_logic.base_loaders import source_loader, output_loader
-from dags.music_data_job import load_music_vectorstore
-from dags.college_data_job import load_college_vectorstore
 
-import pickle
+##### Change your loaders as desired ######
 
+# College loader
+college_url = "https://www.collegeconfidential.com/colleges/university-of-chicago/"
+loader = CollegeConfidentialLoader(college_url)
+college_dagchain = DagChainBaseLoader("college", [loader], 'daily')
+college_job, college_schedule = college_dagchain.setup_job()
 
-
-
-
-
-# Logic to load source loader
-
+# Music loader
+song_url1 = "https://www.azlyrics.com/lyrics/mileycyrus/flowers.html"
+song_url2 = "https://www.azlyrics.com/lyrics/taylorswift/teardropsonmyguitar.html"
+loader1 = AZLyricsLoader(song_url1)
+loader2 = AZLyricsLoader(song_url2)
 
 
-# Logic to save text docs in vectorstore
-
-
-# Schedule setup
-basic_music_schedule = ScheduleDefinition(job=load_music_vectorstore, cron_schedule="0 0 * * *")
-basic_college_schedule = ScheduleDefinition(job=load_college_vectorstore, cron_schedule="0 0 * * *")
+music_dagchain = DagChainBaseLoader("music", [loader1, loader2], 'daily')
+music_job, music_schedule = music_dagchain.setup_job()
 
 # Defs to output
-defs = Definitions(
-    jobs=[load_music_vectorstore, load_college_vectorstore],
-    schedules=[basic_music_schedule, basic_college_schedule],
+defs = SetDefinitions(
+    jobs=[music_job, college_job],
+    schedules=[music_schedule, college_schedule],
 )
