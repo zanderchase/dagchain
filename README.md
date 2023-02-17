@@ -18,4 +18,5 @@ This can be used to replace the manual run of `ingest.sh` in [ChatLangChain](htt
 
 ## Sample View
 
-<img width="1012" alt="Screen Shot 2023-02-15 at 2 31 50 PM" src="https://user-images.githubusercontent.com/22759784/219172842-1a7e5052-6856-4ef9-93b1-4d70ad78bd44.png">
+<img width="675" alt="Screen Shot 2023-02-17 at 2 35 52 PM" src="https://user-images.githubusercontent.com/22759784/219800978-ee2ad358-82ad-4107-9afc-4cc86831a063.png">
+
