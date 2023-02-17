@@ -1,0 +1,5 @@
+*.pyc
+*.pkl
+__pycache__
+*.env
+tmp*

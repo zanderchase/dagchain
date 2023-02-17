@@ -1,31 +1,30 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings import OpenAIEmbeddings
-from dagster import op
+from langchain.document_loaders.base import BaseLoader, Document
 import pickle
+from typing import List
 
-@op(config_schema={"name": str})
-def source_loader(loader_list):
-    loaders = loader_list
+
+def load_docs_from_loaders(loader_list: List[BaseLoader]) -> List[Document]:
     docs = []
-    for loader in loaders:
-        docs.extend(loader.load())   
-    return list(docs)
+    for loader in loader_list:
+        docs.extend(loader.load())
+    return docs
 
 
-@op(config_schema={"name": str})
-def output_loader(context, source_loader):
-    name = context.op_config["name"]
-    filename = f"{name}_vectorstore.pkl"
-    # Split text
+def split_documents(documents: List[Document]) -> List[Document]:
     text_splitter = RecursiveCharacterTextSplitter()
-    documents = text_splitter.split_documents(source_loader)
+    return text_splitter.split_documents(documents)
 
-    # Load Data to vectorstore
+
+def create_embeddings_vectorstore(documents):
     embeddings = OpenAIEmbeddings()
-    vectorstore = FAISS.from_documents(documents, embeddings)
+    return FAISS.from_documents(documents, embeddings)
 
-    # Save vectorstore
+
+def save_vectorstore_to_disk(name, vectorstore):
+    filename = f"{name}_vectorstore.pkl"
     with open(filename, "wb") as f:
         pickle.dump(vectorstore, f)
 
