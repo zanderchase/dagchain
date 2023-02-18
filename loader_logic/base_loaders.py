@@ -1,6 +1,6 @@
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores.faiss import FAISS
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.text_splitter import TextSplitter
+from langchain.embeddings.base import Embeddings
+from langchain.vectorstores.base import VectorStore
 from langchain.document_loaders.base import BaseLoader, Document
 import pickle
 from typing import List
@@ -13,14 +13,12 @@ def load_docs_from_loaders(loader_list: List[BaseLoader]) -> List[Document]:
     return docs
 
 
-def split_documents(documents: List[Document]) -> List[Document]:
-    text_splitter = RecursiveCharacterTextSplitter()
+def split_documents(documents: List[Document], text_splitter: TextSplitter) -> List[Document]:
     return text_splitter.split_documents(documents)
 
 
-def create_embeddings_vectorstore(documents):
-    embeddings = OpenAIEmbeddings()
-    return FAISS.from_documents(documents, embeddings)
+def create_embeddings_vectorstore(documents: List[Document], embeddings: Embeddings, vectorstorecls: VectorStore):
+    return vectorstorecls.from_documents(documents, embeddings)
 
 
 def save_vectorstore_to_disk(name, vectorstore):
