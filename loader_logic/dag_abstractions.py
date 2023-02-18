@@ -31,11 +31,8 @@ class DagChainBaseLoader(ABC):
                  text_splitter: TextSplitter = RecursiveCharacterTextSplitter(),
                  embeddings: Embeddings = OpenAIEmbeddings(),
                  vectorstore_cls: VectorStore = FAISS,
-                 schedule: str = "daily"):
-        """Initialize with webpage path."""
-
-        if schedule != "daily":
-            raise ValueError("Only daily schedules are supported right now")
+                 schedule: str = "@daily"):
+        """Initialize variables. Name, Loader, Text Splitter, Embeddings, Vectorstore Class, Schedule"""
 
         self.name = name
         self.loader = loader
@@ -43,6 +40,9 @@ class DagChainBaseLoader(ABC):
         self.embeddings = embeddings
         self.vectorstore_cls = vectorstore_cls
         self.schedule = schedule
+
+        if not any(self.schedule in s for s in ["@hourly", "@daily", "@weekly", "@monthly"]):
+            raise ValueError("Only @hourly, @daily, @weekly, @monthly schedules are supported right now")
 
     def to_assets(self):
         @asset(
@@ -67,10 +67,10 @@ class DagChainBaseLoader(ABC):
             name=f"{self.name}_vectorstore",
             io_manager_key="vectorstore_io_manager",
             freshness_policy=FreshnessPolicy(
-                maximum_lag_minutes=5, cron_schedule="0 0 * * *"
+                maximum_lag_minutes=5, cron_schedule=self.schedule
             ),
             ins={"documents": AssetIn(f"{self.name}_documents")},
-            compute_kind="faiss",
+            compute_kind="vectorstore",
         )
         def vectorstore(documents):
             "Compute embeddings and create a vector store"
