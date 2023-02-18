@@ -10,6 +10,11 @@ from dagster import (
     build_asset_reconciliation_sensor,
     AssetSelection,
 )
+from langchain.text_splitter import TextSplitter, RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings.base import Embeddings
+from langchain.vectorstores.base import VectorStore
+from langchain.vectorstores.faiss import FAISS
 from langchain.document_loaders.base import BaseLoader
 from loader_logic.base_loaders import (
     load_docs_from_loaders,
@@ -20,7 +25,13 @@ from loader_logic.base_loaders import (
 
 
 class DagChainBaseLoader(ABC):
-    def __init__(self, name: str, loader: List[BaseLoader], schedule="daily"):
+    def __init__(self,
+                 name: str,
+                 loader: List[BaseLoader],
+                 text_splitter: TextSplitter = RecursiveCharacterTextSplitter(),
+                 embeddings: Embeddings = OpenAIEmbeddings(),
+                 vectorstore_cls: VectorStore = FAISS,
+                 schedule: str = "daily"):
         """Initialize with webpage path."""
 
         if schedule != "daily":
@@ -28,6 +39,9 @@ class DagChainBaseLoader(ABC):
 
         self.name = name
         self.loader = loader
+        self.text_splitter = text_splitter
+        self.embeddings = embeddings
+        self.vectorstore_cls = vectorstore_cls
         self.schedule = schedule
 
     def to_assets(self):
@@ -46,7 +60,7 @@ class DagChainBaseLoader(ABC):
         )
         def documents(raw_documents):
             "Split the documents into chunks that fit in the LLM context window"
-            return split_documents(raw_documents)
+            return split_documents(raw_documents, self.text_splitter)
 
         @asset(
             group_name=self.name,
@@ -60,7 +74,7 @@ class DagChainBaseLoader(ABC):
         )
         def vectorstore(documents):
             "Compute embeddings and create a vector store"
-            return create_embeddings_vectorstore(documents)
+            return create_embeddings_vectorstore(documents, self.embeddings, self.vectorstore_cls)
 
         return [raw_documents, documents, vectorstore]
 
