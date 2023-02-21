@@ -1,4 +1,4 @@
-from loader_logic.dag_abstractions import DagChainBaseLoader, DagchainDefinitions
+from dagchain import (DagchainPineconeDefinitions, PineconeIndex, DagchainDefinitions, DagChainBaseLoader)
 from langchain.document_loaders import CollegeConfidentialLoader, AZLyricsLoader
 
 ##### Change your loaders as desired ######
@@ -16,4 +16,6 @@ loader2 = AZLyricsLoader(song_url2)
 music_dagchain = DagChainBaseLoader("music", [loader1, loader2])
 
 # Defs to output
-defs = DagchainDefinitions([college_dagchain, music_dagchain])
+#defs = DagchainDefinitions([college_dagchain, music_dagchain])
+defs = DagchainPineconeDefinitions('langchain_pinecone', [college_dagchain, music_dagchain])
+
