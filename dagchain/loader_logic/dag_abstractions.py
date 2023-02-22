@@ -20,13 +20,15 @@ from dagchain.loader_logic.base_loaders import (
 
 
 class DagChainBaseLoader(ABC):
-    def __init__(self,
-                 name: str,
-                 loader: List[BaseLoader],
-                 text_splitter: TextSplitter = RecursiveCharacterTextSplitter(),
-                 embeddings: Embeddings = OpenAIEmbeddings(),
-                 vectorstore_cls: VectorStore = FAISS,
-                 schedule: str = "@daily"):
+    def __init__(
+        self,
+        name: str,
+        loader: List[BaseLoader],
+        text_splitter: TextSplitter = RecursiveCharacterTextSplitter(),
+        embeddings: Embeddings = OpenAIEmbeddings(),
+        vectorstore_cls: VectorStore = FAISS,
+        schedule: str = "@daily",
+    ):
         """Initialize variables. Name, Loader, Text Splitter, Embeddings, Vectorstore Class, Schedule"""
 
         self.name = name
@@ -36,8 +38,12 @@ class DagChainBaseLoader(ABC):
         self.vectorstore_cls = vectorstore_cls
         self.schedule = schedule
 
-        if not any(self.schedule in s for s in ["@hourly", "@daily", "@weekly", "@monthly"]):
-            raise ValueError("Only @hourly, @daily, @weekly, @monthly schedules are supported right now")
+        if not any(
+            self.schedule in s for s in ["@hourly", "@daily", "@weekly", "@monthly"]
+        ):
+            raise ValueError(
+                "Only @hourly, @daily, @weekly, @monthly schedules are supported right now"
+            )
 
     def to_split_document_assets(self):
         @asset(
@@ -56,12 +62,12 @@ class DagChainBaseLoader(ABC):
         def documents(raw_documents):
             "Split the documents into chunks that fit in the LLM context window"
             return split_documents(raw_documents, self.text_splitter)
-        
-        return raw_documents, documents
 
+        return raw_documents, documents
 
     def to_pinecone_assets(self):
         raw_documents, documents = self.to_split_document_assets()
+
         @asset(
             required_resource_keys={"pinecone"},
             io_manager_key="pinecone_io_manager",
@@ -72,10 +78,9 @@ class DagChainBaseLoader(ABC):
         )
         def load_pinecone(context, documents):
             "Insert the documents into pinecone vectorstore"
-            return pinecone_setup(context,documents)
-        
-        return [raw_documents, documents, load_pinecone]
+            return pinecone_setup(context, documents)
 
+        return [raw_documents, documents, load_pinecone]
 
     def to_vectorstore_assets(self):
         raw_documents, documents = self.to_split_document_assets()
@@ -92,6 +97,8 @@ class DagChainBaseLoader(ABC):
         )
         def vectorstore(documents):
             "Compute embeddings and create a vector store"
-            return create_embeddings_vectorstore(documents, self.embeddings, self.vectorstore_cls)
+            return create_embeddings_vectorstore(
+                documents, self.embeddings, self.vectorstore_cls
+            )
 
         return [raw_documents, documents, vectorstore]

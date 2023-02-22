@@ -10,3 +10,4 @@ flask
 pandas
 pinecone-client
 numpy
+black

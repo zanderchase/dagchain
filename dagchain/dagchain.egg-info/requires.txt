@@ -1,0 +1,5 @@
+langchain
+dagster
+openai
+faiss-cpu
+pinecone-client

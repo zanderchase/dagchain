@@ -14,12 +14,17 @@ def load_docs_from_loaders(loader_list: List[BaseLoader]) -> List[Document]:
     return docs
 
 
-def split_documents(documents: List[Document], text_splitter: TextSplitter) -> List[Document]:
+def split_documents(
+    documents: List[Document], text_splitter: TextSplitter
+) -> List[Document]:
     return text_splitter.split_documents(documents)
 
 
-def create_embeddings_vectorstore(documents: List[Document], embeddings: Embeddings, vectorstorecls: VectorStore):
+def create_embeddings_vectorstore(
+    documents: List[Document], embeddings: Embeddings, vectorstorecls: VectorStore
+):
     return vectorstorecls.from_documents(documents, embeddings)
+
 
 def pinecone_setup(context, documents):
     texts = [ob.page_content for ob in documents]
@@ -27,6 +32,7 @@ def pinecone_setup(context, documents):
     index_name = context.resources.pinecone
     metadatas = [ob.metadata for ob in documents]
     return [texts, embeddings, index_name, metadatas]
+
 
 def save_vectorstore_to_disk(name, vectorstore):
     filename = f"{name}_vectorstore.pkl"
