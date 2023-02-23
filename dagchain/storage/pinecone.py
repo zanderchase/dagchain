@@ -34,10 +34,11 @@ def DagchainPineconeDefinitions(name, dagchains):
     assets = [
         asset for dagchain in dagchains for asset in dagchain.to_pinecone_assets()
     ]
+    index_name = name.replace("_", "-")
+    PineconeIndex(index_name)
 
     @resource
     def pinecone_index_name():
-        index_name = name.replace("_", "-")
         return index_name
 
     return Definitions(
@@ -64,7 +65,11 @@ def DagchainPineconeOutput(index, query):
 
 
 def PineconeIndex(name):
+    if os.environ.get("PINECONE_API_KEY") is None:
+        raise ValueError("PINECONE_API_KEY is not set")
     api_key = os.getenv("PINECONE_API_KEY")
+    if os.environ.get("PINECONE_ENVIRONMENT") is None:
+        raise ValueError("PINECONE_ENVIRONMENT is not set")
     environment = os.getenv("PINECONE_ENVIRONMENT")
     pinecone.init(api_key=api_key, environment=environment)
     index_name = name.replace("_", "-")

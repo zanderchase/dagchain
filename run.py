@@ -1,6 +1,5 @@
 from dagchain import (
     DagchainPineconeDefinitions,
-    PineconeIndex,
     DagchainDefinitions,
     DagChainBaseLoader,
 )
@@ -21,7 +20,10 @@ loader2 = AZLyricsLoader(song_url2)
 music_dagchain = DagChainBaseLoader("music", [loader1, loader2])
 
 # Defs to output
-# defs = DagchainDefinitions([college_dagchain, music_dagchain])
-defs = DagchainPineconeDefinitions(
-    "langchain_pinecone", [college_dagchain, music_dagchain]
-)
+# Local vectorstore
+defs = DagchainDefinitions([college_dagchain, music_dagchain])
+
+# Pinecone vectorstore DB. Currently only supports 1 dagchain.
+# defs = DagchainPineconeDefinitions(
+#     "langchain_pinecone", [college_dagchain]
+# )
