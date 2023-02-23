@@ -6,6 +6,7 @@ from dagster import (
 )
 from dagchain.loader_logic.base_loaders import save_vectorstore_to_disk
 
+
 class VectorstoreIOManager(IOManager):
     def load_input(self, context):
         raise NotImplementedError()
@@ -15,10 +16,10 @@ class VectorstoreIOManager(IOManager):
         context.add_output_metadata({"filename": filename})
 
 
-
-
 def DagchainDefinitions(dagchains):
-    assets = [asset for dagchain in dagchains for asset in dagchain.to_vectorstore_assets()]
+    assets = [
+        asset for dagchain in dagchains for asset in dagchain.to_vectorstore_assets()
+    ]
     return Definitions(
         assets=assets,
         resources={"vectorstore_io_manager": VectorstoreIOManager()},
@@ -29,4 +30,3 @@ def DagchainDefinitions(dagchains):
             )
         ],
     )
-

@@ -1,12 +1,7 @@
 langchain
 openai
 faiss-cpu
-chromadb
-requests
-beautifulsoup4
 dagster
 dagit
-flask
-pandas
 pinecone-client
-numpy
+black
