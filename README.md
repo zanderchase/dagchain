@@ -42,3 +42,10 @@ This can be used to replace the manual run of `ingest.sh` in [ChatLangChain](htt
 
 <img width="675" alt="Screen Shot 2023-02-17 at 2 35 52 PM" src="https://user-images.githubusercontent.com/22759784/219800978-ee2ad358-82ad-4107-9afc-4cc86831a063.png">
 
+## Contributing Guide
+
+To build package:
+
+0. Clean up any artifacts from before: `rm -rf dist`
+1. Build package: `python -m build` (will create `dist` folder)
+2. Upload package: `twine upload dist/*`
