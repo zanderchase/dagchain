@@ -1,7 +1,6 @@
-langchain
-openai
-faiss-cpu
-dagster
-dagit
-pinecone-client
+-e .
+# For lint
 black
+ruff
+# For build
+build

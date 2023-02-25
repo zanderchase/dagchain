@@ -1,0 +1,6 @@
+# For examples
+openai
+pinecone-client
+faiss-cpu
+requests
+beautifulsoup4

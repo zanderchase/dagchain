@@ -1,5 +1,4 @@
 from dagchain import (
-    DagchainPineconeDefinitions,
     DagchainDefinitions,
     DagChainBaseLoader,
 )
