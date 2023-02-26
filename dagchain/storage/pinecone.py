@@ -5,8 +5,7 @@ from dagster import (
     AssetSelection,
     resource,
 )
-import pinecone
-import numpy as np
+
 from langchain.vectorstores.pinecone import Pinecone
 from langchain.embeddings import OpenAIEmbeddings
 import os
@@ -17,6 +16,8 @@ class PineconeIOManager(IOManager):
         raise NotImplementedError()
 
     def handle_output(self, context, obj):
+        import pinecone
+
         index_name = obj[2]
         if index_name in pinecone.list_indexes():
             pinecone.delete_index(index_name)
@@ -71,6 +72,8 @@ def PineconeIndex(name):
     if os.environ.get("PINECONE_ENVIRONMENT") is None:
         raise ValueError("PINECONE_ENVIRONMENT is not set")
     environment = os.getenv("PINECONE_ENVIRONMENT")
+    import pinecone
+
     pinecone.init(api_key=api_key, environment=environment)
     index_name = name.replace("_", "-")
     index = pinecone.Index(index_name=index_name)
