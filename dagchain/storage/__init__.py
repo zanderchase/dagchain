@@ -4,3 +4,10 @@ from dagchain.storage.pinecone import (
     PineconeIndex,
 )
 from dagchain.storage.local_vectorstore import DagchainDefinitions
+
+__all__ = [
+    "DagchainDefinitions",
+    "DagchainPineconeOutput",
+    "DagchainPineconeDefinitions",
+    "PineconeIndex",
+]

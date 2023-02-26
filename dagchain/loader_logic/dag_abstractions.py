@@ -29,7 +29,17 @@ class DagChainBaseLoader(ABC):
         vectorstore_cls: VectorStore = FAISS,
         schedule: str = "@daily",
     ):
-        """Initialize variables. Name, Loader, Text Splitter, Embeddings, Vectorstore Class, Schedule"""
+        """Initialize variables.
+
+        Args:
+            name: name of the loader.
+            loader: LangChain loader to use.
+            text_splitter: LangChain TextSplitter to use.
+            embeddings: LangChain Embeddings to use.
+            vectorstore_cls: LangChain vectorstore class to use.
+            schedule: Dagster schedule to use.
+
+        """
 
         self.name = name
         self.loader = loader
@@ -42,7 +52,8 @@ class DagChainBaseLoader(ABC):
             self.schedule in s for s in ["@hourly", "@daily", "@weekly", "@monthly"]
         ):
             raise ValueError(
-                "Only @hourly, @daily, @weekly, @monthly schedules are supported right now"
+                "Only @hourly, @daily, @weekly, @monthly "
+                "schedules are supported right now"
             )
 
     def to_split_document_assets(self):
@@ -50,7 +61,7 @@ class DagChainBaseLoader(ABC):
             group_name=self.name, name=f"{self.name}_raw_documents", compute_kind="http"
         )
         def raw_documents():
-            "Load the raw document text from the source"
+            """Load the raw document text from the source."""
             return load_docs_from_loaders(self.loader)
 
         @asset(
@@ -60,7 +71,7 @@ class DagChainBaseLoader(ABC):
             compute_kind="langchain",
         )
         def documents(raw_documents):
-            "Split the documents into chunks that fit in the LLM context window"
+            """Split the documents into chunks that fit in the LLM context window."""
             return split_documents(raw_documents, self.text_splitter)
 
         return raw_documents, documents
@@ -96,7 +107,7 @@ class DagChainBaseLoader(ABC):
             compute_kind="vectorstore",
         )
         def vectorstore(documents):
-            "Compute embeddings and create a vector store"
+            """Compute embeddings and create a vector store."""
             return create_embeddings_vectorstore(
                 documents, self.embeddings, self.vectorstore_cls
             )
