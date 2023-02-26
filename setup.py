@@ -5,7 +5,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="dagchain",
-    version="0.1.8",
+    version="0.0.1",
     url="https://github.com/zanderchase/dagchain",
     author="Zander Chase",
     author_email="zanderchase@gmail.com",
