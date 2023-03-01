@@ -3,7 +3,12 @@ from dagchain import (
     DagChainBaseLoader,
 )
 from langchain.document_loaders import CollegeConfidentialLoader, AZLyricsLoader
+import sys
 
+if not sys.warnoptions:
+    import warnings
+
+    warnings.simplefilter("ignore")
 ##### Change your loaders as desired ######
 
 # College loader

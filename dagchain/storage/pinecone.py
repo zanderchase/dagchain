@@ -28,7 +28,7 @@ class PineconeIOManager(IOManager):
             metadatas=obj[3],
             namespace="dagchain-documents",
         )
-        context.add_output_metadata({"pineconde_index": obj[2]})
+        context.add_output_metadata({"pinecone_index": obj[2]})
 
 
 def DagchainPineconeDefinitions(name, dagchains):

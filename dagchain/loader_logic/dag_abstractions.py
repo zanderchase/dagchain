@@ -16,6 +16,7 @@ from dagchain.loader_logic.base_loaders import (
     split_documents,
     create_embeddings_vectorstore,
     pinecone_setup,
+    weaviate_setup,
 )
 
 
@@ -113,3 +114,20 @@ class DagChainBaseLoader(ABC):
             )
 
         return [raw_documents, documents, vectorstore]
+
+    def to_weaviate_assets(self):
+        raw_documents, documents = self.to_split_document_assets()
+
+        @asset(
+            required_resource_keys={"weaviate"},
+            io_manager_key="weaviate_io_manager",
+            group_name=self.name,
+            name=f"{self.name}_weaviate",
+            ins={"documents": AssetIn(f"{self.name}_documents")},
+            compute_kind="weaviate",
+        )
+        def load_weaviate(context, documents):
+            "Insert the documents into weaviate vectorstore"
+            return weaviate_setup(context, documents)
+
+        return [raw_documents, documents, load_weaviate]

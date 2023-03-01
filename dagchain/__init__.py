@@ -1,8 +1,10 @@
 from dagchain.storage import (
     DagchainDefinitions,
     DagchainPineconeDefinitions,
-    DagchainPineconeOutput,
     PineconeIndex,
+    DagchainPineconeOutput,
+    WeaviateClient,
+    DagchainWeaviateDefinitions,
 )
 from dagchain.loader_logic import DagChainBaseLoader
 
@@ -12,4 +14,6 @@ __all__ = [
     "DagchainPineconeOutput",
     "PineconeIndex",
     "DagChainBaseLoader",
+    "WeaviateClient",
+    "DagchainWeaviateDefinitions",
 ]
