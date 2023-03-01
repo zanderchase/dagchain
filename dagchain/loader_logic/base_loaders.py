@@ -39,3 +39,10 @@ def save_vectorstore_to_disk(name, vectorstore):
     with open(filename, "wb") as f:
         pickle.dump(vectorstore, f)
     return filename
+
+
+def weaviate_setup(context, documents):
+    texts = [ob.page_content for ob in documents]
+    index_name = context.resources.weaviate
+    metadatas = [ob.metadata for ob in documents]
+    return [texts, index_name, metadatas]

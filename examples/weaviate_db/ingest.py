@@ -1,5 +1,5 @@
 from dagchain import (
-    DagchainPineconeDefinitions,
+    DagchainWeaviateDefinitions,
     DagChainBaseLoader,
 )
 from langchain.document_loaders import CollegeConfidentialLoader
@@ -16,5 +16,12 @@ college_url = "https://www.collegeconfidential.com/colleges/brown-university/"
 loader = CollegeConfidentialLoader(college_url)
 college_dagchain = DagChainBaseLoader("college", [loader])
 
-# Pinecone vectorstore DB. Currently only supports 1 dagchain.
-defs = DagchainPineconeDefinitions("langchain_pinecone", [college_dagchain])
+# Must start with an uppercase letter
+client_name = "Langchain_weaviate"
+
+# Weaviate vectorstore DB. Currently only supports 1 dagchain.
+defs = DagchainWeaviateDefinitions(client_name, [college_dagchain])
+
+
+def get_client_name():
+    return client_name

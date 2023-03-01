@@ -1,0 +1,1 @@
+from examples.weaviate_db.query import get_tool

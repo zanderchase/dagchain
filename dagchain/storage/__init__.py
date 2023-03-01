@@ -3,6 +3,10 @@ from dagchain.storage.pinecone import (
     DagchainPineconeOutput,
     PineconeIndex,
 )
+from dagchain.storage.weaviate import (
+    DagchainWeaviateDefinitions,
+    WeaviateClient,
+)
 from dagchain.storage.local_vectorstore import DagchainDefinitions
 
 __all__ = [
@@ -10,4 +14,6 @@ __all__ = [
     "DagchainPineconeOutput",
     "DagchainPineconeDefinitions",
     "PineconeIndex",
+    "DagchainWeaviateDefinitions",
+    "WeaviateClient",
 ]

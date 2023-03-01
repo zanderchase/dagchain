@@ -17,8 +17,8 @@ We have created an example to show how to get started with this.
 2. Go into repository for examples `cd examples`
 3. Install dependencies: `pip install -r requirements.txt`
 4. Set OPENAI_API_KEY environment variable `export OPENAI_API_KEY={YOUR_API_KEY}`
-5. Run `make local-ingest` and navigate to http://127.0.0.1:3000/ to view the dag jobs you have created.See alternative storage options below.
-6. Run `make local-run` to interact with a langchain agent using the local vectorstore.
+5. Run `make ingest-local` and navigate to http://127.0.0.1:3000/ to view the dag jobs you have created.See alternative storage options below.
+6. Run `make run-local` to interact with a langchain agent using the local vectorstore.
 
 To edit ingest and run files you should only need to update the examples/{storage_type}/ingest.py and examples/{storage_type}/query.py files. Right now for local storage I have set up two dags that leverage common loading logic. To add a new loader run simply create new document loader and set it up in the examples/main.py file using dagchain.
    i. You can use any Langchain [Document Loaders](https://langchain.readthedocs.io/en/latest/modules/document_loaders.html) to load your own data.
@@ -26,12 +26,20 @@ To edit ingest and run files you should only need to update the examples/{storag
 
 ## Storage
 
+### Weaviate
+To run with Weaviate Vector Database you will need to:
+1. Sign up for an account here: [Weaviate](https://weaviate.io/)
+2. Create a cluster with no auth, start the cluster, and get the url of the running instance (should look like: "https://{your-endpoint-name}.weaviate.network/",),and set environment variable `export WEAVIATE_URL={YOUR_URL}`
+4. Run `make ingest-weaviate` and navigate to http://127.0.0.1:3000/ to view the dag jobs you have created.
+5. Run `make run-weaviate` to interact with a langchain agent using the weaviate vectorstore.
+
+
 ### Pinecone
 To run with Pinecone Vector Database you will need to:
 1. Sign up for an account here: [Pinecone](https://www.pinecone.io/)
 2. Navigate to API Key page and set two environment variables `export PINECONE_API_KEY={YOUR_API_KEY}` and `export PINECONE_ENVIRONMENT={YOUR_ENVIRONMENT}`
-4. Run `make pinecone-ingest` and navigate to http://127.0.0.1:3000/ to view the dag jobs you have created.
-5. Run `make pinecone-run` to interact with a langchain agent using the pinecone vectorstore.
+4. Run `make ingest-pinecone` and navigate to http://127.0.0.1:3000/ to view the dag jobs you have created.
+5. Run `make run-pinecone` to interact with a langchain agent using the pinecone vectorstore.
 
 ## Future
 
