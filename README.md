@@ -29,7 +29,7 @@ To edit ingest and run files you should only need to update the examples/{storag
 ### Weaviate
 To run with Weaviate Vector Database you will need to:
 1. Sign up for an account here: [Weaviate](https://weaviate.io/)
-2. Create a cluster with no auth, start the cluster, and get the url of the running instance (should look like: "https://{your-endpoint-name}.weaviate.network/",),and set environment variable `export WEAVIATE_URL={YOUR_URL}`
+2. Create a cluster with no auth, start the cluster, and get the url of the running instance (should look like: https://{your-endpoint-name}.weaviate.network/),and set environment variable `export WEAVIATE_URL={YOUR_URL}`
 4. Run `make ingest-weaviate` and navigate to http://127.0.0.1:3000/ to view the dag jobs you have created.
 5. Run `make run-weaviate` to interact with a langchain agent using the weaviate vectorstore.
 
