@@ -7,7 +7,7 @@ from dagchain import PineconeIndex
 llm = OpenAI(temperature=0)
 
 
-def get_vector():
+def GetVector():
     # Update on change
     index = PineconeIndex("langchain_pinecone")
     embeddings = OpenAIEmbeddings()
@@ -17,11 +17,11 @@ def get_vector():
     )
 
 
-def get_tool():
+def GetTool():
     # Update on change
     return Tool(
         name="Pinecone College QA System",
-        func=get_vector().run,
+        func=GetVector().run,
         description="""Useful for when you need to answer questions about colleges. 
         Input should be a fully formed question.""",
     )

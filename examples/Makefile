@@ -15,4 +15,3 @@ run-pinecone:
 
 run-weaviate:
 	python3 main.py weaviate_db
-

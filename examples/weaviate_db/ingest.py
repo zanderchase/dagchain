@@ -23,5 +23,5 @@ client_name = "Langchain_weaviate"
 defs = DagchainWeaviateDefinitions(client_name, [college_dagchain])
 
 
-def get_client_name():
+def GetClientName():
     return client_name

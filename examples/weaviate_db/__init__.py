@@ -1,1 +1,5 @@
-from examples.weaviate_db.query import get_tool
+from examples.weaviate_db.query import GetTool
+
+__all__ = [
+    "GetTool",
+]

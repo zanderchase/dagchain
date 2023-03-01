@@ -36,7 +36,6 @@ def DagchainWeaviateDefinitions(name, dagchains):
         asset for dagchain in dagchains for asset in dagchain.to_weaviate_assets()
     ]
     index_name = name.replace("_", "-")
-    # WeaviateClient()
 
     @resource
     def weaviate_index_name():
@@ -55,14 +54,6 @@ def DagchainWeaviateDefinitions(name, dagchains):
             )
         ],
     )
-
-
-# def DagchainPineconeOutput(index, query):
-#     embedding = OpenAIEmbeddings()
-#     embed = embedding.embed_documents(query)
-#     xq = embed["data"][0]["embedding"]
-#     res = index.query(xq, top_k=2, include_metadata=True)
-#     return res
 
 
 def WeaviateClient():

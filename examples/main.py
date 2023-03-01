@@ -4,12 +4,14 @@ import sys
 
 query = __import__(sys.argv[1])
 llm = OpenAI(temperature=0)
-tools = [query.get_tool()]
+tools = [query.GetTool()]
+
 
 def get_agent():
     return initialize_agent(
         tools, llm, agent="zero-shot-react-description", verbose=True
     )
+
 
 if __name__ == "__main__":
     if len(sys.argv) <= 1:

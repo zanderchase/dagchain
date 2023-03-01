@@ -12,17 +12,17 @@ with open(vectorstore_file, "rb") as f:
     local_vectorstore = pickle.load(f)
 
 
-def get_vector():
+def GetVector():
     return VectorDBQA.from_chain_type(
         llm=llm, chain_type="stuff", vectorstore=local_vectorstore
     )
 
 
-def get_tool():
+def GetTool():
     # Update on change
     return Tool(
         name="Local Vectorstore College QA System",
-        func=get_vector().run,
+        func=GetVector().run,
         description="""Useful for when you need to answer questions about colleges. 
         Input should be a fully formed question.""",
     )
